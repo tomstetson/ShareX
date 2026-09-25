@@ -93,12 +93,12 @@ namespace ShareX.Setup
         private static string MakeAppxPath => Path.Combine(WindowsKitsDir, "x64", "makeappx.exe");
 
         private const string InnoSetupCompilerPath = @"C:\Program Files (x86)\Inno Setup 6\ISCC.exe";
-        private const string FFmpegVersion = "8.0";
+        private const string FFmpegVersion = "8.1";
         private static string FFmpegDownloadURL = $"https://github.com/ShareX/FFmpeg/releases/download/v{FFmpegVersion}/ffmpeg-{FFmpegVersion}-win-x64.zip";
         private const string RecorderDevicesVersion = "0.12.10";
         private static string RecorderDevicesDownloadURL = $"https://github.com/ShareX/RecorderDevices/releases/download/v{RecorderDevicesVersion}/recorder-devices-{RecorderDevicesVersion}-setup.exe";
-        private const string ExifToolVersion = "13.29";
-        private static string ExifToolDownloadURL = $"https://github.com/ShareX/ExifTool/releases/download/v{ExifToolVersion}/exiftool-{ExifToolVersion}-win64.zip";
+        private const string ExifToolVersion = "13.59";
+        private static string ExifToolDownloadURL = $"https://sourceforge.net/projects/exiftool/files/exiftool-{ExifToolVersion}_64.zip/download";
 
         private static void Main(string[] args)
         {
@@ -452,7 +452,7 @@ namespace ShareX.Setup
         {
             if (!File.Exists(ExifToolPath))
             {
-                string fileName = Path.GetFileName(ExifToolDownloadURL);
+                string fileName = $"exiftool-{ExifToolVersion}_64.zip";
                 string filePath = Path.Combine(OutputDir, fileName);
 
                 Console.WriteLine("Downloading: " + ExifToolDownloadURL);
@@ -460,6 +460,9 @@ namespace ShareX.Setup
 
                 Console.WriteLine("Extracting: " + filePath);
                 ZipManager.Extract(filePath, OutputDir);
+                string extractedDir = Path.Combine(OutputDir, $"exiftool-{ExifToolVersion}_64");
+                File.Copy(Path.Combine(extractedDir, "exiftool(-k).exe"), ExifToolPath);
+                FileHelpers.CopyAll(Path.Combine(extractedDir, "exiftool_files"), Path.Combine(OutputDir, "exiftool_files"));
             }
         }
 
