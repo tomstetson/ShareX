@@ -43,3 +43,6 @@ jobs:
 
       - name: Build
         run: dotnet build --no-restore --configuration "${{ matrix.configuration }}" --self-contained true /m:1 "${{ env.SOLUTION_FILE_PATH }}"
+      - name: Verify native SQLite runtime
+        if: matrix.configuration == 'Release'
+        run: ./Build/VerifySqlite.ps1
